@@ -23,16 +23,14 @@ The fastest way to get started is using the v0 community template with live demo
 
 ### Option 2: Traditional Git Clone
 \`\`\`bash
-git clone https://github.com/promprot/promprot.com.git
+git clone https://github.com/promprot/promprot-terminal
 cd promprot.com
 npm install
 npm run dev
 \`\`\`
 
 ## 🌐 Live Demo
-
-**[https://promprot.com](https://promprot.com)**
-**[https://promprot.vercel.app](https://promprot.vercel.app)**
+**[https://promprot-terminalvercel.app](https://promprot-terminal.vercel.app)**
 
 ## 📋 Overview
 
