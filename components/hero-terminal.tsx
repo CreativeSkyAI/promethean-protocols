@@ -9,14 +9,6 @@ interface HeroTerminalProps {
 
 const FULL_TEXT = "promprot"
 
-const ASCII_ART = String.raw`
- ____                      ____            _   
-|  _ \ _ __ ___  _ __ ___ |  _ \ _ __ ___ | |_ 
-| |_) | '__/ _ \| '_ \` _ \| |_) | '__/ _ \| __|
-|  __/| | | (_) | | | | | |  __/| | | (_) | |_ 
-|_|   |_|  \___/|_| |_| |_|_|   |_|  \___/ \__|
-                                              `
-
 const fetchIPInfo = async (retries = 3): Promise<string> => {
   for (let attempt = 1; attempt <= retries; attempt++) {
     try {
@@ -142,11 +134,6 @@ export function HeroTerminal({ onExitTriggered }: HeroTerminalProps) {
 
     setTerminalLines([])
 
-    const asciiLines = ASCII_ART.trim().split("\n")
-    setTerminalLines(
-      asciiLines.map((line) => `<span class="text-green-400 font-mono text-sm whitespace-pre">${line}</span>`),
-    )
-
     const initialTimeout = setTimeout(async () => {
       const exitSequence = [
         '<span class="text-red-400 font-bold">MAXIMUM THERMAL CONTACTS INITIATED...</span>',
@@ -248,7 +235,8 @@ export function HeroTerminal({ onExitTriggered }: HeroTerminalProps) {
       }
 
       typeExitSequence()
-    }, 1000)
+    }, 500)
+    exitTimeoutsRef.current.push(initialTimeout)
   }
 
   const handleInputSubmit = (e: React.KeyboardEvent<HTMLInputElement>) => {
