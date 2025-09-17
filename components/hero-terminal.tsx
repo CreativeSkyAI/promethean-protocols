@@ -57,6 +57,7 @@ export function HeroTerminal({ onExitTriggered }: HeroTerminalProps) {
 
   const inputRef = useRef<HTMLInputElement>(null)
   const exitTimeoutsRef = useRef<NodeJS.Timeout[]>([])
+  const ipInfoRef = useRef("IP_MASKED | LOCATION_ENCRYPTED | NETWORK_SECURED")
 
   const clearExitTimeouts = () => {
     exitTimeoutsRef.current.forEach((timeout) => clearTimeout(timeout))
@@ -66,9 +67,10 @@ export function HeroTerminal({ onExitTriggered }: HeroTerminalProps) {
   const processCommand = (command: string): string[] => {
     const cmd = command.toLowerCase().trim()
 
+    setTerminalLines([])
+
     switch (cmd) {
       case "help":
-        setTerminalLines([]) // Clear terminal before showing help
         return [
           '<span class="text-cyan-400 font-bold">Authorized Commands:</span>',
           '  <span class="text-yellow-400">clear</span>         - <span class="text-gray-400">Clear the terminal screen</span>',
@@ -293,31 +295,31 @@ export function HeroTerminal({ onExitTriggered }: HeroTerminalProps) {
       const colorDepth = window.screen.colorDepth
       const pixelRatio = window.devicePixelRatio
 
-      const ipInfo = await fetchIPInfo()
-
       const fingerprint = btoa(userAgent + platform + screen).slice(0, 16)
-
-      const lines = [
-        "",
-        '<span class="text-cyan-400">$ traceroute target_host</span>',
-        `<span class="text-yellow-400">network_trace:</span> <span class="text-white">${ipInfo}</span>`,
-        "",
-        '<span class="text-cyan-400">$ md5sum /dev/urandom | head -c 16</span>',
-        `<span class="text-yellow-400">fingerprint:</span> <span class="text-orange-400">${fingerprint}</span><span class="text-gray-400">...</span>`,
-        "",
-        '<span class="text-cyan-400">$ cat /proc/user_metadata</span>',
-        `<span class="text-yellow-400">user_agent=</span><span class="text-green-300">"${userAgent}"</span>`,
-        `<span class="text-yellow-400">platform=</span><span class="text-green-300">"${platform}"</span> <span class="text-yellow-400">lang=</span><span class="text-green-300">"${language}"</span>`,
-        `<span class="text-yellow-400">screen_res=</span><span class="text-green-300">"${screen}"</span> <span class="text-yellow-400">viewport=</span><span class="text-green-300">"${viewport}"</span>`,
-        `<span class="text-yellow-400">color_depth=</span><span class="text-green-300">"${colorDepth}bit"</span> <span class="text-yellow-400">pixel_ratio=</span><span class="text-green-300">"${pixelRatio}x"</span>`,
-        `<span class="text-yellow-400">timezone=</span><span class="text-green-300">"${timezone}"</span>`,
-        "",
-      ]
 
       let lineIndex = 0
       let charIndex = 0
 
       const typeCharacter = () => {
+        const currentIpInfo = ipInfoRef.current
+
+        const lines = [
+          "",
+          '<span class="text-cyan-400">$ traceroute target_host</span>',
+          `<span class="text-yellow-400">network_trace:</span> <span class="text-white">${currentIpInfo}</span>`,
+          "",
+          '<span class="text-cyan-400">$ md5sum /dev/urandom | head -c 16</span>',
+          `<span class="text-yellow-400">fingerprint:</span> <span class="text-orange-400">${fingerprint}</span><span class="text-gray-400">...</span>`,
+          "",
+          '<span class="text-cyan-400">$ cat /proc/user_metadata</span>',
+          `<span class="text-yellow-400">user_agent=</span><span class="text-green-300">"${userAgent}"</span>`,
+          `<span class="text-yellow-400">platform=</span><span class="text-green-300">"${platform}"</span> <span class="text-yellow-400">lang=</span><span class="text-green-300">"${language}"</span>`,
+          `<span class="text-yellow-400">screen_res=</span><span class="text-green-300">"${screen}"</span> <span class="text-yellow-400">viewport=</span><span class="text-green-300">"${viewport}"</span>`,
+          `<span class="text-yellow-400">color_depth=</span><span class="text-green-300">"${colorDepth}bit"</span> <span class="text-yellow-400">pixel_ratio=</span><span class="text-green-300">"${pixelRatio}x"</span>`,
+          `<span class="text-yellow-400">timezone=</span><span class="text-green-300">"${timezone}"</span>`,
+          "",
+        ]
+
         if (lineIndex >= lines.length) {
           setIsInteractive(true)
           return
@@ -360,7 +362,18 @@ export function HeroTerminal({ onExitTriggered }: HeroTerminalProps) {
         }
       }
 
-      setTimeout(typeCharacter, 0)
+      typeCharacter()
+
+      fetchIPInfo().then((ipInfo) => {
+        ipInfoRef.current = ipInfo
+        setTerminalLines((prev) =>
+          prev.map((line) =>
+            line.includes("network_trace:")
+              ? `<span class="text-yellow-400">network_trace:</span> <span class="text-white">${ipInfo}</span>`
+              : line,
+          ),
+        )
+      })
     }
 
     detectUserMetadata()
