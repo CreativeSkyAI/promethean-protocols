@@ -154,17 +154,15 @@ export default function RootLayout({
                   // Clear console first
                   console.clear();
                   
-                  // ASCII Art Logo - Fixed escaping
                   console.log('%c ____                      ____            _   ', 'color: #00ff00; font-family: monospace; font-size: 14px; font-weight: bold;');
-                  console.log('%c|  _ \\\\ _ __ ___  _ __ ___ |  _ \\\\ _ __ ___ | |_ ', 'color: #00ff00; font-family: monospace; font-size: 14px; font-weight: bold;');
-                  console.log('%c| |_) | \\'__/ _ \\\\| \\'_ \` _ \\\\| |_) | \\'__/ _ \\\\| __|', 'color: #00ff00; font-family: monospace; font-size: 14px; font-weight: bold;');
+                  console.log('%c|  _ \\ _ __ ___  _ __ ___ |  _ \\ _ __ ___ | |_ ', 'color: #00ff00; font-family: monospace; font-size: 14px; font-weight: bold;');
+                  console.log('%c| |_) | \\\'__/ _ \\\\| \\\'_ \\\' _ \\\\| |_) | \\\'__/ _ \\\\| __|', 'color: #00ff00; font-family: monospace; font-size: 14px; font-weight: bold;');
                   console.log('%c|  __/| | | (_) | | | | | |  __/| | | (_) | |_ ', 'color: #00ff00; font-family: monospace; font-size: 14px; font-weight: bold;');
                   console.log('%c|_|   |_|  \\\\___/|_| |_| |_|_|   |_|  \\\\___/ \\\\__|', 'color: #00ff00; font-family: monospace; font-size: 14px; font-weight: bold;');
                   console.log('%c                                                ', 'color: #00ff00; font-family: monospace; font-size: 14px;');
                   console.log('%c        PROMETHEAN PROTOCOLS v2.1.7           ', 'color: #00ff00; font-family: monospace; font-size: 12px; text-decoration: underline;');
                   console.log('');
                   
-                  // Agent Detection Messages
                   console.log('%c[SYSTEM ALERT]', 'color: #ff0000; font-weight: bold; background: #330000; padding: 2px 4px;');
                   console.log('%cUnauthorized access detected...', 'color: #ff6666; font-family: monospace;');
                   console.log('');
@@ -178,39 +176,6 @@ export default function RootLayout({
                   }, 1000);
                   
                   setTimeout(() => {
-                    console.log('%c[NETWORK TRACE]', 'color: #ffff00; font-weight: bold; background: #333300; padding: 2px 4px;');
-                    console.log('%cInitiating user fingerprint scan...', 'color: #ffff66; font-family: monospace;');
-                    console.log('');
-                    
-                    // Safe user metadata - no external API calls
-                    const userAgent = navigator.userAgent;
-                    const screenRes = screen.width + 'x' + screen.height;
-                    const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-                    const language = navigator.language;
-                    const platform = navigator.platform;
-                    const cookiesEnabled = navigator.cookieEnabled;
-                    const onlineStatus = navigator.onLine;
-                    const colorDepth = screen.colorDepth;
-                    const pixelRatio = window.devicePixelRatio || 1;
-                    
-                    console.log('%c┌─ USER METADATA ─────────────────────────────┐', 'color: #888888; font-family: monospace;');
-                    console.log('%c│ Browser: ' + userAgent.split(' ').pop(), 'color: #888888; font-family: monospace;');
-                    console.log('%c│ Screen Resolution: ' + screenRes, 'color: #888888; font-family: monospace;');
-                    console.log('%c│ Color Depth: ' + colorDepth + '-bit', 'color: #888888; font-family: monospace;');
-                    console.log('%c│ Pixel Ratio: ' + pixelRatio + 'x', 'color: #888888; font-family: monospace;');
-                    console.log('%c│ Timezone: ' + timezone, 'color: #888888; font-family: monospace;');
-                    console.log('%c│ Language: ' + language, 'color: #888888; font-family: monospace;');
-                    console.log('%c│ Platform: ' + platform, 'color: #888888; font-family: monospace;');
-                    console.log('%c│ Cookies: ' + (cookiesEnabled ? 'ENABLED' : 'DISABLED'), 'color: #888888; font-family: monospace;');
-                    console.log('%c│ Connection: ' + (onlineStatus ? 'ONLINE' : 'OFFLINE'), 'color: #888888; font-family: monospace;');
-                    console.log('%c│ Threat Level: MINIMAL', 'color: #00ff00; font-family: monospace;');
-                    console.log('%c│ Clearance Level: VISITOR', 'color: #ffff00; font-family: monospace;');
-                    console.log('%c│ Session ID: ' + Math.random().toString(36).substr(2, 9).toUpperCase(), 'color: #888888; font-family: monospace;');
-                    console.log('%c└─────────────────────────────────────────────┘', 'color: #888888; font-family: monospace;');
-                    console.log('');
-                  }, 2000);
-                  
-                  setTimeout(() => {
                     console.log('%c[AI AGENT]', 'color: #00ffff; font-weight: bold; background: #003333; padding: 2px 4px;');
                     console.log('%cImpressive... you made it this far.', 'color: #66ffff; font-family: monospace;');
                     console.log('%cYou seem like the type who appreciates good code.', 'color: #66ffff; font-family: monospace;');
@@ -218,18 +183,17 @@ export default function RootLayout({
                     console.log('');
                     console.log('%cPro tip: Try typing "help" in the terminal above! 😉', 'color: #00ff00; font-family: monospace; font-weight: bold;');
                     console.log('');
+                  }, 2500);
+                  
+                  setTimeout(() => {
+                    console.log('%c[SYSTEM STATUS]', 'color: #ffff00; font-weight: bold; background: #333300; padding: 2px 4px;');
+                    console.log('%cMatrix rain: ACTIVE 🌧️', 'color: #00ff00; font-family: monospace;');
+                    console.log('%cTerminal emulator: RUNNING ⚡', 'color: #00ff00; font-family: monospace;');
+                    console.log('%cCyberpunk vibes: MAXIMUM 🔥', 'color: #00ff00; font-family: monospace;');
+                    console.log('%cEaster egg: DISCOVERED ✨', 'color: #ff00ff; font-family: monospace;');
+                    console.log('');
                     console.log('%c--- END TRANSMISSION ---', 'color: #ff00ff; font-family: monospace; font-weight: bold; text-align: center;');
                   }, 4000);
-                  
-                  // Add some fake "system processes" for fun
-                  setTimeout(() => {
-                    console.log('%c[BACKGROUND PROCESSES]', 'color: #666666; font-size: 10px; font-family: monospace;');
-                    console.log('%cmatrix_rain.exe ... RUNNING', 'color: #666666; font-size: 10px; font-family: monospace;');
-                    console.log('%cterminal_emulator.exe ... RUNNING', 'color: #666666; font-size: 10px; font-family: monospace;');
-                    console.log('%ccode_rain_animation.dll ... LOADED', 'color: #666666; font-size: 10px; font-family: monospace;');
-                    console.log('%ccyberpunk_aesthetic.css ... APPLIED', 'color: #666666; font-size: 10px; font-family: monospace;');
-                    console.log('%ceaster_egg.js ... EXECUTED', 'color: #00ff00; font-size: 10px; font-family: monospace;');
-                  }, 5000);
                 }
 
                 const originalWarn = console.warn;
