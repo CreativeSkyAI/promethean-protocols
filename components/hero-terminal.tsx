@@ -21,11 +21,12 @@ const FULL_TEXT = "promprot"
  *
  * Attempts to get real IP data from ipapi.co, falls back to masked values on failure.
  * Uses exponential backoff for retries and includes timeout protection.
+ * Now handles errors silently to avoid console spam when blocked by tracking prevention.
  *
- * @param retries - Number of retry attempts (default: 3)
+ * @param retries - Number of retry attempts (default: 2)
  * @returns Promise resolving to formatted IP info string
  */
-const fetchIPInfo = async (retries = 3): Promise<string> => {
+const fetchIPInfo = async (retries = 2): Promise<string> => {
   for (let attempt = 1; attempt <= retries; attempt++) {
     try {
       // Create abort controller for timeout handling
@@ -44,13 +45,12 @@ const fetchIPInfo = async (retries = 3): Promise<string> => {
       const data = await response.json()
       return `${data.ip} | ${data.city}, ${data.region} | ISP: ${data.org}`
     } catch (error) {
-      console.log(`[v0] IP fetch attempt ${attempt} failed:`, error)
+      // Silently fail - no console logging to avoid spam
       if (attempt === retries) {
-        // Return masked values if all attempts fail
         return "IP_MASKED | LOCATION_ENCRYPTED | NETWORK_SECURED"
       }
-      // Exponential backoff: wait 1s, 2s, 3s between retries
-      await new Promise((resolve) => setTimeout(resolve, attempt * 1000))
+      // Wait shorter time between retries: 500ms, 1s instead of 1s, 2s, 3s
+      await new Promise((resolve) => setTimeout(resolve, attempt * 500))
     }
   }
   return "IP_MASKED | LOCATION_ENCRYPTED | NETWORK_SECURED"
@@ -493,7 +493,7 @@ export function HeroTerminal({ onExitTriggered }: HeroTerminalProps) {
       typeCharacter()
 
       // Fetch IP info in background and update when ready
-      fetchIPInfo().then((ipInfo) => {
+      fetchIPInfo(2).then((ipInfo) => {
         ipInfoRef.current = ipInfo
         setTerminalLines((prev) =>
           prev.map((line) =>
