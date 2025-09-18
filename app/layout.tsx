@@ -156,10 +156,10 @@ export default function RootLayout({
                   
                   // ASCII Art Logo - Fixed escaping
                   console.log('%c ____                      ____            _   ', 'color: #00ff00; font-family: monospace; font-size: 14px; font-weight: bold;');
-                  console.log('%c|  _ \\\\ _ __ ___  _ __ ___ |  _ \\\\ _ __ ___ | |_ ', 'color: #00ff00; font-family: monospace; font-size: 14px; font-weight: bold;');
-                  console.log('%c| |_) | \\'__/ _ \\\\| \\'_ \` _ \\\\| |_) | \\'__/ _ \\\\| __|', 'color: #00ff00; font-family: monospace; font-size: 14px; font-weight: bold;');
+                  console.log('%c|  _ \\ _ __ ___  _ __ ___ |  _ \\ _ __ ___ | |_ ', 'color: #00ff00; font-family: monospace; font-size: 14px; font-weight: bold;');
+                  console.log('%c| |_) | \\\\\\\'__/ _ \\\\\\\\| \\\\\\\'_ \\\' _ \\\\\\\\| |_) | \\\\\\\'__/ _ \\\\\\\\| __|', 'color: #00ff00; font-family: monospace; font-size: 14px; font-weight: bold;');
                   console.log('%c|  __/| | | (_) | | | | | |  __/| | | (_) | |_ ', 'color: #00ff00; font-family: monospace; font-size: 14px; font-weight: bold;');
-                  console.log('%c|_|   |_|  \\\\___/|_| |_| |_|_|   |_|  \\\\___/ \\\\__|', 'color: #00ff00; font-family: monospace; font-size: 14px; font-weight: bold;');
+                  console.log('%c|_|   |_|  \\\\\\\\_\\\\\\_/|_| |_| |_|_|   |_|  \\\\\\\\_\\\\\\_/ \\\\\\\\_\\\\\\__|', 'color: #00ff00; font-family: monospace; font-size: 14px; font-weight: bold;');
                   console.log('%c                                                ', 'color: #00ff00; font-family: monospace; font-size: 14px;');
                   console.log('%c        PROMETHEAN PROTOCOLS v2.1.7           ', 'color: #00ff00; font-family: monospace; font-size: 12px; text-decoration: underline;');
                   console.log('');
@@ -237,10 +237,15 @@ export default function RootLayout({
                 
                 console.warn = function(...args) {
                   const message = args.join(' ');
-                  // Suppress Monaco Editor warnings
-                  if (message.includes('MonacoEnvironment') || 
+                  // Suppress accessibility warnings and other noise
+                  if (message.includes('DialogContent') || 
+                      message.includes('DialogTitle') ||
+                      message.includes('DialogDescription') ||
+                      message.includes('aria-describedby') ||
+                      message.includes('MonacoEnvironment') || 
                       message.includes('web worker') ||
-                      message.includes('getWorkerUrl')) {
+                      message.includes('getWorkerUrl') ||
+                      message.includes('VisuallyHidden')) {
                     return;
                   }
                   originalWarn.apply(console, args);
@@ -253,11 +258,22 @@ export default function RootLayout({
                       message.includes('Content Security Policy') ||
                       message.includes('sentry.io') ||
                       message.includes('stripe.network') ||
-                      message.includes('Tracking Prevention')) {
+                      message.includes('Tracking Prevention') ||
+                      message.includes('Failed to fetch') ||
+                      message.includes('ipapi.co') ||
+                      message.includes('favicon.ico')) {
                     return;
                   }
                   originalError.apply(console, args);
                 };
+
+                if (document.readyState === 'complete') {
+                  setTimeout(initConsoleEasterEgg, 1000);
+                } else {
+                  window.addEventListener('load', () => {
+                    setTimeout(initConsoleEasterEgg, 1000);
+                  });
+                }
               })();
             `,
           }}
