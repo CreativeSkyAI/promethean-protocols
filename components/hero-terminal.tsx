@@ -21,20 +21,32 @@ const FULL_TEXT = "promprot"
  *
  * Attempts to get real IP data from ipapi.co, falls back to masked values on failure.
  * Uses exponential backoff for retries and includes timeout protection.
- * Now handles errors silently to avoid console spam when blocked by tracking prevention.
+ * Now uses a more graceful approach to minimize browser-level error logging.
  *
- * @param retries - Number of retry attempts (default: 2)
+ * @param retries - Number of retry attempts (default: 1)
  * @returns Promise resolving to formatted IP info string
  */
-const fetchIPInfo = async (retries = 2): Promise<string> => {
+const fetchIPInfo = async (retries = 1): Promise<string> => {
+  // Check if we're likely to be blocked (basic heuristic)
+  const isLikelyBlocked =
+    navigator.doNotTrack === "1" ||
+    (window as any).chrome?.runtime?.onConnect || // Extension detected
+    (navigator.userAgent.includes("Firefox") && navigator.userAgent.includes("Private"))
+
+  if (isLikelyBlocked) {
+    return "IP_MASKED | LOCATION_ENCRYPTED | NETWORK_SECURED"
+  }
+
   for (let attempt = 1; attempt <= retries; attempt++) {
     try {
-      // Create abort controller for timeout handling
       const controller = new AbortController()
-      const timeoutId = setTimeout(() => controller.abort(), 5000) // 5 second timeout
+      const timeoutId = setTimeout(() => controller.abort(), 3000) // Reduced timeout to 3s
 
       const response = await fetch("https://ipapi.co/json/", {
         signal: controller.signal,
+        mode: "cors",
+        credentials: "omit",
+        cache: "no-cache",
       })
       clearTimeout(timeoutId)
 
@@ -49,8 +61,7 @@ const fetchIPInfo = async (retries = 2): Promise<string> => {
       if (attempt === retries) {
         return "IP_MASKED | LOCATION_ENCRYPTED | NETWORK_SECURED"
       }
-      // Wait shorter time between retries: 500ms, 1s instead of 1s, 2s, 3s
-      await new Promise((resolve) => setTimeout(resolve, attempt * 500))
+      await new Promise((resolve) => setTimeout(resolve, 200))
     }
   }
   return "IP_MASKED | LOCATION_ENCRYPTED | NETWORK_SECURED"
@@ -493,7 +504,7 @@ export function HeroTerminal({ onExitTriggered }: HeroTerminalProps) {
       typeCharacter()
 
       // Fetch IP info in background and update when ready
-      fetchIPInfo(2).then((ipInfo) => {
+      fetchIPInfo(1).then((ipInfo) => {
         ipInfoRef.current = ipInfo
         setTerminalLines((prev) =>
           prev.map((line) =>
