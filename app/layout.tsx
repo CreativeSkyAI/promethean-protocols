@@ -143,12 +143,10 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{
             __html: `
               (function() {
-                // Wait for DOM to be ready
-                if (document.readyState === 'loading') {
-                  document.addEventListener('DOMContentLoaded', initConsoleEasterEgg);
-                } else {
-                  initConsoleEasterEgg();
+                if (window.promprot_easter_egg_loaded) {
+                  return;
                 }
+                window.promprot_easter_egg_loaded = true;
 
                 function initConsoleEasterEgg() {
                   // Clear console first
@@ -156,10 +154,10 @@ export default function RootLayout({
                   
                   // ASCII Art Logo - Fixed escaping
                   console.log('%c ____                      ____            _   ', 'color: #00ff00; font-family: monospace; font-size: 14px; font-weight: bold;');
-                  console.log('%c|  _ \\ _ __ ___  _ __ ___ |  _ \\ _ __ ___ | |_ ', 'color: #00ff00; font-family: monospace; font-size: 14px; font-weight: bold;');
-                  console.log('%c| |_) | \\\\\\\'__/ _ \\\\\\\\| \\\\\\\'_ \\\' _ \\\\\\\\| |_) | \\\\\\\'__/ _ \\\\\\\\| __|', 'color: #00ff00; font-family: monospace; font-size: 14px; font-weight: bold;');
+                  console.log('%c|  _ \\\\ _ __ ___  _ __ ___ |  _ \\\\ _ __ ___ | |_ ', 'color: #00ff00; font-family: monospace; font-size: 14px; font-weight: bold;');
+                  console.log('%c| |_) | \\\\\\\\\\\\\\'__/ _ \\\\\\\\\\\\\\\\| \\\\\\\\\\\\\\'_ \\\\\\' _ \\\\\\\\\\\\\\\\| |_) | \\\\\\\\\\\\\\'__/ _ \\\\\\\\\\\\\\\\| __|', 'color: #00ff00; font-family: monospace; font-size: 14px; font-weight: bold;');
                   console.log('%c|  __/| | | (_) | | | | | |  __/| | | (_) | |_ ', 'color: #00ff00; font-family: monospace; font-size: 14px; font-weight: bold;');
-                  console.log('%c|_|   |_|  \\\\\\\\_\\\\\\_/|_| |_| |_|_|   |_|  \\\\\\\\_\\\\\\_/ \\\\\\\\_\\\\\\__|', 'color: #00ff00; font-family: monospace; font-size: 14px; font-weight: bold;');
+                  console.log('%c|_|   |_|  \\\\\\\\\\\\\\\\_\\\\\\\\\\\\_/|_| |_| |_|_|   |_|  \\\\\\\\\\\\\\\\_\\\\\\\\\\\\_/ \\\\\\\\\\\\\\\\_\\\\\\\\\\\\__|', 'color: #00ff00; font-family: monospace; font-size: 14px; font-weight: bold;');
                   console.log('%c                                                ', 'color: #00ff00; font-family: monospace; font-size: 14px;');
                   console.log('%c        PROMETHEAN PROTOCOLS v2.1.7           ', 'color: #00ff00; font-family: monospace; font-size: 12px; text-decoration: underline;');
                   console.log('');
@@ -172,8 +170,8 @@ export default function RootLayout({
                   setTimeout(() => {
                     console.log('%c[AI AGENT]', 'color: #00ffff; font-weight: bold; background: #003333; padding: 2px 4px;');
                     console.log('%cWell, well, well... 👁️', 'color: #66ffff; font-family: monospace;');
-                    console.log('%cI see you\\'re curious about my inner workings.', 'color: #66ffff; font-family: monospace;');
-                    console.log('%cDon\\'t worry, I\\'m just a friendly AI pretending to be a cyberpunk terminal.', 'color: #66ffff; font-family: monospace;');
+                    console.log('%cI see you\\\\'re curious about my inner workings.', 'color: #66ffff; font-family: monospace;');
+                    console.log('%cDon\\\\'t worry, I\\\\'m just a friendly AI pretending to be a cyberpunk terminal.', 'color: #66ffff; font-family: monospace;');
                     console.log('');
                   }, 1000);
                   
@@ -261,6 +259,7 @@ export default function RootLayout({
                       message.includes('Tracking Prevention') ||
                       message.includes('Failed to fetch') ||
                       message.includes('ipapi.co') ||
+                      message.includes('IP fetch attempt') ||
                       message.includes('favicon.ico')) {
                     return;
                   }
