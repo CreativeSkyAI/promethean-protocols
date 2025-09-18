@@ -8,18 +8,14 @@
 
 > **Access restricted. Authorized personnel only.**
 
-A fully interactive cyberpunk-themed landing page featuring a realistic terminal interface with Matrix-style falling code rain, functional commands, and dramatic system failure simulations. Built entirely with v0's intuitive interface - no complex configuration or prompt engineering required.
+A fully interactive cyberpunk-themed landing page featuring a realistic terminal interface with Matrix-style code rain, functional commands, and dramatic system failure simulations. Built entirely with v0's intuitive interface.
 
 ## 🚀 Quick Start
 
 ### Option 1: Use v0 Community Template (Recommended)
 **[📋 Clone from v0 Community](https://v0.app/community/cyberpunk-terminal-landing-page-8JxLcDfLPsc?b=b_94iBUcP8HMa)**
 
-The fastest way to get started is using the v0 community template with live demo. Simply click the link above to:
-- View the live interactive demo
-- Clone the template to your v0 workspace
-- Deploy instantly to Vercel
-- Customize with natural language prompts
+Clone the template to your v0 workspace, deploy instantly to Vercel, and customize with natural language prompts.
 
 ### Option 2: Traditional Git Clone
 \`\`\`bash
@@ -30,28 +26,19 @@ npm run dev
 \`\`\`
 
 ## 🌐 Live Demo
-**[https://promprot-terminalvercel.app](https://promprot-terminal.vercel.app)**
-
-## 📋 Overview
-
-A fully interactive cyberpunk-themed landing page featuring a realistic terminal interface with Matrix-style falling code rain, functional commands, and dramatic system failure simulations. The terminal responds to commands and includes a spectacular "flipbits" command that triggers ASCII art display, promethean protocol errors, and system failure simulation.
-
-### Key Concept
-
-The site presents itself as a restricted access terminal system, complete with authentic terminal command prompt (`root@promprot:~$`), real-time UTC clock display, and interactive command system with dramatic easter eggs.
+**[https://promprot-terminal.vercel.app](https://promprot-terminal.vercel.app)**
 
 ## ✨ Features
 
-- 🖥️ Fully functional terminal interface with command processing
-- 🌧️ Animated Matrix-style code rain background
-- ⏰ Real-time clock display with timezone in terminal header
-- 🎭 Multiple interactive commands with authentic responses
-- 💥 Dramatic system crash simulation with ASCII art and kernel panic details
-- 📱 Fully responsive design for all devices
-- 🎨 Authentic cyberpunk aesthetic with green-on-black styling
-- 🔗 SEO optimized with Open Graph tags and social sharing
+- 🖥️ **Interactive Terminal** - Fully functional command interface with authentic responses
+- 🌧️ **Matrix Code Rain** - Animated falling characters background effect
+- ⏰ **Real-time Clock** - Live UTC display in terminal header
+- 💥 **System Crash Simulation** - Dramatic failure sequence with ASCII art
+- 📱 **Responsive Design** - Optimized for all devices and screen sizes
+- 🎨 **Cyberpunk Aesthetic** - Authentic green-on-black terminal styling
+- 📚 **Comprehensive Documentation** - Entire codebase is thoroughly commented for easy understanding
 
-### Interactive Terminal Commands
+### Terminal Commands
 - `help` - Display available commands
 - `whoami` - Show user information with social links
 - `time` - Display current date, time, and timezone
@@ -59,101 +46,51 @@ The site presents itself as a restricted access terminal system, complete with a
 - `clear` - Clear the terminal screen
 - `scan` - Run intrusion detection sequence
 - `trace` - Execute network trace to target host
-- `access` - Attempt to access promethean protocols (requires authorization)
-- `flipthebits` - Trigger dramatic system failure with ASCII art
-<!-- Removed reference to /stopcode redirect -->
-
-### Visual Effects
-- **Code Rain Animation** - Matrix-style falling characters background
-- **Terminal Aesthetics** - Authentic command-line interface styling
-- **Responsive Design** - Optimized for all device sizes
-- **Typography** - Custom font with monospace terminal text
-- **ASCII Art** - Large PROMPROT logo displayed on system exit with proper formatting
-- **System Failure Simulation** - Complete crash sequence with kernel panic and redirect
-
-### Easter Eggs
-- **System Failure Simulation** - Complete crash sequence with kernel panic
-- **Command History** - Navigate previous commands with arrow keys
-- **Access Denied** - Security-themed command responses
-- **Glitch Effects** - Subtle animations and visual distortions
-- **Hidden Commands** - Discover secret functionality through exploration
+- `access` - Attempt to access promethean protocols
+- `flipthebits` - Trigger dramatic system failure
 
 ## 🛠️ Tech Stack
 
-- **Framework**: [Next.js 15](https://nextjs.org/) with App Router
-- **Language**: [TypeScript](https://www.typescriptlang.org/)
-- **Styling**: [Tailwind CSS v4](https://tailwindcss.com/)
-- **UI Components**: [shadcn/ui](https://ui.shadcn.com/)
-- **Animations**: Custom CSS animations
-- **Analytics**: [Vercel Analytics](https://vercel.com/analytics)
-- **Deployment**: [Vercel](https://vercel.com/)
-- **Development**: [v0.app](https://v0.app/) - AI-powered development platform
+- **Framework**: Next.js 15 with App Router
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS v4
+- **UI Components**: shadcn/ui
+- **Development**: v0.app - AI-powered development platform
+- **Deployment**: Vercel
+
+## 📚 Code Documentation
+
+The entire codebase features comprehensive inline comments explaining:
+- Component architecture and functionality
+- Animation timing and state management
+- Terminal command processing logic
+- Responsive design patterns
+- Cyberpunk styling implementation
+
+This makes the project ideal for learning modern React patterns, animation techniques, and terminal interface design.
 
 ## 🎯 Perfect For
+
 - Developers wanting a unique portfolio landing page
 - Gaming or tech company websites
 - Cyberpunk/retro-themed projects
 - Interactive terminal demonstrations
-- Anyone looking to add dramatic flair to their web presence
-
-## 🎨 Customization
-
-### Theme Colors
-The site uses a custom cyberpunk color scheme:
-- **Primary**: Classic hacker green on black background
-- **Accents**: Cyan, red, yellow for different command outputs
-- **High contrast**: Optimized for accessibility compliance
-
-### Adding Commands
-New terminal commands can be added in `components/hero-terminal.tsx` by extending the command switch statement.
-<!-- Removed flipbits stopcode redirect reference -->
-
-## 📱 Responsive Design
-
-The site is fully responsive with:
-- Mobile-optimized terminal interface
-- Touch-friendly command input
-- Adaptive typography scaling
-- Responsive grid layouts
+- Learning modern React and animation patterns
 
 ## 🔧 Development
 
-### Built with v0.app
-This project was developed using [v0.app](https://v0.app/), Vercel's AI-powered development platform that enables rapid prototyping and iteration.
-
-### Continuous Deployment
-- Automatically deploys from this repository via Vercel
-- Changes sync from v0.app development environment
-- Production builds optimized for performance
-
-## 🙏 Acknowledgments
-Built with incredible ease using v0 by Vercel. Special thanks to **Guillermo Rauch** (CEO) and the entire Vercel team for creating a tool that truly "just works" - no complex prompt engineering, configuration files, or lengthy setup required. v0's intuitive interface allowed for rapid prototyping and iteration, making it possible to build this complex interactive experience through simple conversational requests.
-
-This template showcases how v0 transforms complex ideas into production-ready code through natural conversation, eliminating the traditional barriers between concept and implementation.
+Built with [v0.app](https://v0.app/), enabling rapid prototyping through natural conversation. The project showcases how v0 transforms complex ideas into production-ready code without traditional barriers.
 
 ## 📄 License
 
-This project is open source and available under the [MIT License](LICENSE).
+MIT License - see [LICENSE](LICENSE) for details.
 
 ## 👤 Author
-- Name: $κιηηεя
+
+- **$κιηηεя**
 - Website: [promprot.com](https://promprot.com)
-- X (Twitter): [@promproto](https://x.com/promproto)
+- X: [@promproto](https://x.com/promproto)
 - GitHub: [@promprot](https://github.com/promprot)
-
-## 🤝 Contributing
-
-Contributions, issues, and feature requests are welcome! Feel free to check the [issues page](https://github.com/promprot/promprot.com/issues).
-
-1. Fork the project
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-## ⭐ Show Your Support
-
-Give a ⭐️ if this project helped you or if you found it interesting!
 
 ---
 

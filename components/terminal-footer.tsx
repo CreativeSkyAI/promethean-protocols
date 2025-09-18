@@ -1,9 +1,28 @@
 "use client"
 
+/**
+ * Props interface for the TerminalFooter component
+ */
 interface TerminalFooterProps {
+  /** Controls footer visibility with smooth transitions */
   isVisible?: boolean
 }
 
+/**
+ * TerminalFooter Component
+ *
+ * Displays a cyberpunk-styled footer with:
+ * - Copyright and branding information
+ * - Creator attribution
+ * - Smooth show/hide animations
+ * - Fixed positioning at bottom of screen
+ *
+ * Features:
+ * - Backdrop blur effect for depth
+ * - Responsive design
+ * - Smooth transitions when hiding/showing
+ * - Terminal-style typography
+ */
 export function TerminalFooter({ isVisible = true }: TerminalFooterProps) {
   return (
     <footer
@@ -14,8 +33,10 @@ export function TerminalFooter({ isVisible = true }: TerminalFooterProps) {
       <div className="max-w-4xl mx-auto px-4 py-3">
         <div className="flex items-center justify-center font-mono text-sm">
           <span className="text-muted-foreground">
+            {/* Copyright and project name */}
             <span className="text-green-400 font-medium">©2025 promprot (promethean protocols)</span>{" "}
             <span className="text-green-400 font-bold">by</span>{" "}
+            {/* Creator attribution with special character styling */}
             <span className="text-green-400 font-medium">$κιηηεя</span>
           </span>
         </div>

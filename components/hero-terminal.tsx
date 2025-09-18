@@ -3,15 +3,32 @@
 import type React from "react"
 import { useState, useEffect, useRef } from "react"
 
+/**
+ * Props interface for the HeroTerminal component
+ */
 interface HeroTerminalProps {
+  /** Callback function triggered when exit sequence starts/stops */
   onExitTriggered?: (isExiting: boolean) => void
 }
 
+/**
+ * Text that gets typed out character by character in the header
+ */
 const FULL_TEXT = "promprot"
 
+/**
+ * Fetches user's IP information with retry logic
+ *
+ * Attempts to get real IP data from ipapi.co, falls back to masked values on failure.
+ * Uses exponential backoff for retries and includes timeout protection.
+ *
+ * @param retries - Number of retry attempts (default: 3)
+ * @returns Promise resolving to formatted IP info string
+ */
 const fetchIPInfo = async (retries = 3): Promise<string> => {
   for (let attempt = 1; attempt <= retries; attempt++) {
     try {
+      // Create abort controller for timeout handling
       const controller = new AbortController()
       const timeoutId = setTimeout(() => controller.abort(), 5000) // 5 second timeout
 
@@ -29,44 +46,97 @@ const fetchIPInfo = async (retries = 3): Promise<string> => {
     } catch (error) {
       console.log(`[v0] IP fetch attempt ${attempt} failed:`, error)
       if (attempt === retries) {
+        // Return masked values if all attempts fail
         return "IP_MASKED | LOCATION_ENCRYPTED | NETWORK_SECURED"
       }
-      // Wait before retry (exponential backoff)
+      // Exponential backoff: wait 1s, 2s, 3s between retries
       await new Promise((resolve) => setTimeout(resolve, attempt * 1000))
     }
   }
   return "IP_MASKED | LOCATION_ENCRYPTED | NETWORK_SECURED"
 }
 
+/**
+ * HeroTerminal Component
+ *
+ * Main interactive terminal interface that provides:
+ * - Character-by-character typing animations
+ * - User metadata detection and display
+ * - Interactive command system with history
+ * - Exit sequence with BSOD (Blue Screen of Death)
+ * - Responsive design for mobile and desktop
+ *
+ * Features:
+ * - Real-time IP geolocation (with fallback)
+ * - Browser fingerprinting display
+ * - Command history navigation (up/down arrows)
+ * - Auto-focus on desktop for better UX
+ * - Animated exit sequences with typing effects
+ */
 export function HeroTerminal({ onExitTriggered }: HeroTerminalProps) {
+  // === STATE MANAGEMENT ===
+
+  /** Text being typed in the header */
   const [displayText, setDisplayText] = useState("")
+  /** Controls cursor blinking in header */
   const [showCursor, setShowCursor] = useState(true)
+  /** Array of terminal output lines */
   const [terminalLines, setTerminalLines] = useState<string[]>([])
+  /** Current line being typed in initial sequence */
   const [currentLineIndex, setCurrentLineIndex] = useState(0)
+  /** Current character being typed in current line */
   const [currentCharIndex, setCurrentCharIndex] = useState(0)
+  /** Whether a line is currently being typed */
   const [isTypingLine, setIsTypingLine] = useState(false)
+  /** Whether terminal accepts user input */
   const [isInteractive, setIsInteractive] = useState(false)
+  /** Current user input value */
   const [userInput, setUserInput] = useState("")
+  /** Controls input cursor blinking */
   const [showInputCursor, setShowInputCursor] = useState(true)
+  /** History of entered commands */
   const [commandHistory, setCommandHistory] = useState<string[]>([])
+  /** Current position in command history (-1 = not browsing) */
   const [historyIndex, setHistoryIndex] = useState(-1)
+  /** Whether BSOD screen is visible */
   const [showBSOD, setShowBSOD] = useState(false)
+  /** Whether exit sequence is currently running */
   const [isExitSequenceActive, setIsExitSequenceActive] = useState(false)
+  /** Countdown timer for BSOD restart */
   const [countdown, setCountdown] = useState(7)
+  /** Whether restart button should be shown */
   const [showRestartButton, setShowRestartButton] = useState(false)
 
+  // === REFS FOR CLEANUP ===
+
+  /** Reference to input element for focus management */
   const inputRef = useRef<HTMLInputElement>(null)
+  /** Array of timeout IDs for exit sequence cleanup */
   const exitTimeoutsRef = useRef<NodeJS.Timeout[]>([])
+  /** Cached IP information to avoid repeated fetches */
   const ipInfoRef = useRef("IP_MASKED | LOCATION_ENCRYPTED | NETWORK_SECURED")
 
+  /**
+   * Clears all exit sequence timeouts to prevent memory leaks
+   */
   const clearExitTimeouts = () => {
     exitTimeoutsRef.current.forEach((timeout) => clearTimeout(timeout))
     exitTimeoutsRef.current = []
   }
 
+  /**
+   * Processes user commands and returns appropriate responses
+   *
+   * Handles various terminal commands like help, clear, whoami, etc.
+   * Each command returns an array of HTML strings for display.
+   *
+   * @param command - The command string entered by user
+   * @returns Array of HTML strings representing command output
+   */
   const processCommand = (command: string): string[] => {
     const cmd = command.toLowerCase().trim()
 
+    // Clear terminal history for mobile optimization
     setTerminalLines([])
 
     switch (cmd) {
@@ -82,7 +152,7 @@ export function HeroTerminal({ onExitTriggered }: HeroTerminalProps) {
         ]
 
       case "clear":
-        return ["CLEAR_SCREEN"]
+        return ["CLEAR_SCREEN"] // Special command to clear terminal
 
       case "whoami":
         return [
@@ -116,6 +186,7 @@ export function HeroTerminal({ onExitTriggered }: HeroTerminalProps) {
         const timezoneName = now.toLocaleString("en", { timeZoneName: "short" }).split(" ").pop()
         return [`<span class="text-cyan-400">${timeString}</span> <span class="text-yellow-400">${timezoneName}</span>`]
 
+      // Commands that trigger exit sequence
       case "flipthebits":
       case "flipbits":
       case "flip":
@@ -127,16 +198,29 @@ export function HeroTerminal({ onExitTriggered }: HeroTerminalProps) {
     }
   }
 
+  /**
+   * Executes the dramatic exit sequence leading to BSOD
+   *
+   * This creates a multi-stage animation:
+   * 1. Types out system failure messages with realistic terminal output
+   * 2. Shows kernel panic and system errors
+   * 3. Transitions to blue screen of death
+   * 4. Includes countdown timer and restart functionality
+   */
   const executeExit = async () => {
+    // Clean up any existing timeouts
     clearExitTimeouts()
 
+    // Set exit state and disable interaction
     setIsExitSequenceActive(true)
     setIsInteractive(false)
-    onExitTriggered?.(true)
+    onExitTriggered?.(true) // Hide header/footer for immersion
 
+    // Clear terminal for dramatic effect
     setTerminalLines([])
 
     const initialTimeout = setTimeout(async () => {
+      // Realistic system failure sequence with cyberpunk flair
       const exitSequence = [
         '<span class="text-red-400 font-bold">MAXIMUM THERMAL CONTACTS INITIATED...</span>',
         "",
@@ -173,9 +257,13 @@ export function HeroTerminal({ onExitTriggered }: HeroTerminalProps) {
       let lineIndex = 0
       let charIndex = 0
 
+      /**
+       * Recursive function that types out the exit sequence character by character
+       * Uses variable typing speeds for dramatic effect
+       */
       const typeExitSequence = () => {
         if (lineIndex >= exitSequence.length) {
-          // Continue with BSOD after typing is complete
+          // All text typed, show BSOD after brief pause
           const bsodTimeout = setTimeout(() => {
             setShowBSOD(true)
             setCountdown(7)
@@ -186,12 +274,13 @@ export function HeroTerminal({ onExitTriggered }: HeroTerminalProps) {
 
         const currentLine = exitSequence[lineIndex]
 
+        // Initialize new line
         if (charIndex === 0 && currentLine !== "") {
           setTerminalLines((prev) => [...prev, ""])
         }
 
+        // Handle empty lines (spacing)
         if (currentLine === "") {
-          // Handle empty lines
           setTerminalLines((prev) => [...prev, ""])
           lineIndex++
           charIndex = 0
@@ -199,6 +288,7 @@ export function HeroTerminal({ onExitTriggered }: HeroTerminalProps) {
           return
         }
 
+        // Type character by character
         if (charIndex < currentLine.length) {
           const partialLine = currentLine.slice(0, charIndex + 1)
           setTerminalLines((prev) => {
@@ -212,57 +302,75 @@ export function HeroTerminal({ onExitTriggered }: HeroTerminalProps) {
           })
           charIndex++
 
-          // Use same typing speeds as initial load
+          // Variable typing speeds for dramatic effect
           const typingSpeed = currentLine.includes("$")
-            ? 2.5
+            ? 2.5 // Commands type faster
             : currentLine.includes("KERNEL PANIC") || currentLine.includes("CRITICAL")
-              ? 3.75
+              ? 3.75 // Errors type slower for emphasis
               : currentLine.includes("PROMETHEAN")
-                ? 1.875
-                : Math.random() * 1.25 + 1
+                ? 1.875 // Key terms type very fast
+                : Math.random() * 1.25 + 1 // Random variation for realism
 
           setTimeout(typeExitSequence, typingSpeed)
         } else {
+          // Line complete, move to next
           charIndex = 0
           lineIndex++
 
+          // Variable pause times between lines
           const pauseTime = currentLine.includes("$")
-            ? 25
+            ? 25 // Short pause after commands
             : currentLine.includes("CRITICAL") || currentLine.includes("FAILURE")
-              ? 37.5
-              : 12.5
+              ? 37.5 // Longer pause after critical messages
+              : 12.5 // Standard pause
 
           setTimeout(typeExitSequence, pauseTime)
         }
       }
 
       typeExitSequence()
-    }, 500)
+    }, 500) // Initial delay before exit sequence starts
     exitTimeoutsRef.current.push(initialTimeout)
   }
 
+  /**
+   * Handles keyboard input in the terminal
+   *
+   * Features:
+   * - Enter: Execute commands
+   * - Up/Down arrows: Navigate command history
+   * - Prevents input during exit sequences
+   *
+   * @param e - Keyboard event from input field
+   */
   const handleInputSubmit = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    // Block input during exit sequences
     if (isExitSequenceActive) return
 
     if (e.key === "Enter" && userInput.trim()) {
       const command = userInput.trim()
       const response = processCommand(command)
 
+      // Add to command history
       setCommandHistory((prev) => [...prev, command])
       setHistoryIndex(-1)
 
+      // Handle special clear command
       if (response[0] === "CLEAR_SCREEN") {
         setTerminalLines([])
       } else {
+        // Add command and response to terminal
         setTerminalLines((prev) => [...prev, `root@promprot:~# ${command}`, ...response, ""])
       }
 
       setUserInput("")
 
+      // Re-focus input after brief delay
       setTimeout(() => {
         inputRef.current?.focus()
       }, 100)
     } else if (e.key === "ArrowUp") {
+      // Navigate up in command history
       e.preventDefault()
       if (commandHistory.length > 0) {
         const newIndex = historyIndex === -1 ? commandHistory.length - 1 : Math.max(0, historyIndex - 1)
@@ -270,6 +378,7 @@ export function HeroTerminal({ onExitTriggered }: HeroTerminalProps) {
         setUserInput(commandHistory[newIndex])
       }
     } else if (e.key === "ArrowDown") {
+      // Navigate down in command history
       e.preventDefault()
       if (historyIndex >= 0) {
         const newIndex = historyIndex + 1
@@ -284,8 +393,14 @@ export function HeroTerminal({ onExitTriggered }: HeroTerminalProps) {
     }
   }
 
+  // === MAIN EFFECT: Initialize terminal and start typing animations ===
   useEffect(() => {
+    /**
+     * Detects and displays user metadata (browser info, screen resolution, etc.)
+     * Then starts the character-by-character typing animation
+     */
     const detectUserMetadata = async () => {
+      // Gather browser and system information
       const screen = `${window.screen.width}x${window.screen.height}`
       const viewport = `${window.innerWidth}x${window.innerHeight}`
       const userAgent = navigator.userAgent
@@ -295,14 +410,20 @@ export function HeroTerminal({ onExitTriggered }: HeroTerminalProps) {
       const colorDepth = window.screen.colorDepth
       const pixelRatio = window.devicePixelRatio
 
+      // Create browser fingerprint
       const fingerprint = btoa(userAgent + platform + screen).slice(0, 16)
 
       let lineIndex = 0
       let charIndex = 0
 
+      /**
+       * Types out the initial terminal sequence character by character
+       * Shows system information and user metadata in hacker style
+       */
       const typeCharacter = () => {
         const currentIpInfo = ipInfoRef.current
 
+        // Terminal output lines with user metadata
         const lines = [
           "",
           '<span class="text-cyan-400">$ traceroute target_host</span>',
@@ -320,18 +441,21 @@ export function HeroTerminal({ onExitTriggered }: HeroTerminalProps) {
           "",
         ]
 
+        // Check if all lines are typed
         if (lineIndex >= lines.length) {
-          setIsInteractive(true)
+          setIsInteractive(true) // Enable user input
           return
         }
 
         const currentLine = lines[lineIndex]
 
+        // Initialize new line
         if (charIndex === 0) {
           setIsTypingLine(true)
           setTerminalLines((prev) => [...prev, ""])
         }
 
+        // Type character by character
         if (charIndex < currentLine.length) {
           const partialLine = currentLine.slice(0, charIndex + 1)
           setTerminalLines((prev) => {
@@ -341,20 +465,23 @@ export function HeroTerminal({ onExitTriggered }: HeroTerminalProps) {
           })
           charIndex++
 
+          // Variable typing speeds for realism
           const typingSpeed = currentLine.startsWith("$")
-            ? 2.5
+            ? 2.5 // Commands type faster
             : currentLine.includes("ALERT")
-              ? 3.75
+              ? 3.75 // Alerts type slower
               : currentLine.includes("network_trace")
-                ? 1.875
-                : Math.random() * 1.25 + 1
+                ? 1.875 // Network info types fast
+                : Math.random() * 1.25 + 1 // Random variation
 
           setTimeout(typeCharacter, typingSpeed)
         } else {
+          // Line complete, move to next
           setIsTypingLine(false)
           charIndex = 0
           lineIndex++
 
+          // Variable pause times between lines
           const pauseTime =
             currentLine === "" ? 6.25 : currentLine.startsWith("$") ? 25 : currentLine.includes("ALERT") ? 37.5 : 12.5
 
@@ -362,8 +489,10 @@ export function HeroTerminal({ onExitTriggered }: HeroTerminalProps) {
         }
       }
 
+      // Start typing immediately
       typeCharacter()
 
+      // Fetch IP info in background and update when ready
       fetchIPInfo().then((ipInfo) => {
         ipInfoRef.current = ipInfo
         setTerminalLines((prev) =>
@@ -378,6 +507,7 @@ export function HeroTerminal({ onExitTriggered }: HeroTerminalProps) {
 
     detectUserMetadata()
 
+    // Header text typing animation (runs in parallel)
     let i = 0
     const typeTimer = setInterval(() => {
       if (i < FULL_TEXT.length) {
@@ -388,6 +518,7 @@ export function HeroTerminal({ onExitTriggered }: HeroTerminalProps) {
       }
     }, 4.75) // Doubled speed from 9.5ms to 4.75ms
 
+    // Cursor blinking animations
     const cursorTimer = setInterval(() => {
       setShowCursor((prev) => !prev)
     }, 125) // Doubled cursor blink speed from 250ms to 125ms
@@ -396,6 +527,7 @@ export function HeroTerminal({ onExitTriggered }: HeroTerminalProps) {
       setShowInputCursor((prev) => !prev)
     }, 100) // Doubled input cursor speed from 200ms to 100ms
 
+    // Cleanup function
     return () => {
       clearInterval(typeTimer)
       clearInterval(cursorTimer)
@@ -404,6 +536,7 @@ export function HeroTerminal({ onExitTriggered }: HeroTerminalProps) {
     }
   }, [])
 
+  // === AUTO-FOCUS EFFECT: Focus input on desktop when user types ===
   useEffect(() => {
     const handleGlobalKeydown = (e: KeyboardEvent) => {
       // Only auto-focus on desktop (screen width > 768px) and when interactive
@@ -424,6 +557,7 @@ export function HeroTerminal({ onExitTriggered }: HeroTerminalProps) {
     return () => document.removeEventListener("keydown", handleGlobalKeydown)
   }, [isInteractive, isExitSequenceActive])
 
+  // === BSOD COUNTDOWN EFFECT ===
   useEffect(() => {
     if (showBSOD && countdown > 0) {
       const timer = setTimeout(() => {
@@ -435,15 +569,23 @@ export function HeroTerminal({ onExitTriggered }: HeroTerminalProps) {
     }
   }, [showBSOD, countdown])
 
+  /**
+   * Handles manual restart button click
+   * Reloads the entire page to reset the terminal
+   */
   const handleManualRestart = () => {
     window.location.reload()
   }
 
+  // === BSOD RENDER ===
   if (showBSOD) {
     return (
       <div className="fixed inset-0 bg-blue-600 text-white font-mono flex flex-col justify-center items-start z-50 overflow-auto">
         <div className="w-full p-4 md:p-8 space-y-2 md:space-y-4">
+          {/* Sad face emoji */}
           <div className="text-2xl md:text-4xl font-bold mb-2 md:mb-4">:(</div>
+
+          {/* Main error message */}
           <div className="text-base md:text-xl mb-1 md:mb-2">
             Flipping the bits ran into a problem and needs to restart.
           </div>
@@ -451,6 +593,7 @@ export function HeroTerminal({ onExitTriggered }: HeroTerminalProps) {
             We're just collecting some error info, and then we'll restart for you.
           </div>
 
+          {/* Technical error details */}
           <div className="text-xs md:text-sm space-y-1 md:space-y-2 max-w-full">
             <div className="text-white space-y-1">
               <div>Kernel panic - not syncing: Fatal exception in interrupt</div>
@@ -458,6 +601,7 @@ export function HeroTerminal({ onExitTriggered }: HeroTerminalProps) {
               <div className="hidden md:block">Hardware name: PROMPROT Terminal/PROMPROT, BIOS v2.0 01/01/2025</div>
             </div>
 
+            {/* Call trace (desktop only) */}
             <div className="text-blue-200 space-y-1 mt-2 md:mt-4 hidden md:block">
               <div>Call Trace:</div>
               <div className="ml-4 space-y-1">
@@ -470,6 +614,7 @@ export function HeroTerminal({ onExitTriggered }: HeroTerminalProps) {
               </div>
             </div>
 
+            {/* Register dump (desktop only) */}
             <div className="text-blue-300 space-y-1 mt-2 md:mt-4 hidden md:block">
               <div>RIP: 0010:promprot_terminal_init+0x42/0x80</div>
               <div>Code: 48 89 df e8 0b fe ff ff 85 c0 78 73 48 c7 c7 a0 e4 82 82 e8 0f 0b 48</div>
@@ -477,15 +622,19 @@ export function HeroTerminal({ onExitTriggered }: HeroTerminalProps) {
               <div>RBP: ffffc90000013e40 LAMONT: 0000000000000000 R09: c0000000ffffdfff</div>
             </div>
 
+            {/* Module info (desktop only) */}
             <div className="text-blue-400 space-y-1 mt-2 md:mt-4 hidden md:block">
               <div>Modules linked in: promprot_core promprot_terminal matrix_rain</div>
               <div>---[ end Kernel panic - not syncing: Fatal exception in interrupt ]---</div>
             </div>
 
+            {/* Support info and restart section */}
             <div className="mt-4 md:mt-6 space-y-2">
               <p className="text-sm md:text-base">If you call a support person, give them this info:</p>
               <p className="bg-blue-700 p-2 rounded text-xs md:text-sm">Stop code: CRITICAL_PROCESS_DIED</p>
               <p className="bg-blue-700 p-2 rounded text-xs md:text-sm">What failed: promprot.sys</p>
+
+              {/* Restart section with progress bar */}
               <div className="mt-4 p-3 bg-blue-800 rounded border border-blue-500 mb-20 md:mb-8">
                 <div className="text-yellow-300 font-bold text-sm md:text-base">Restoring from floppy backups...</div>
                 {!showRestartButton ? (
@@ -518,6 +667,8 @@ export function HeroTerminal({ onExitTriggered }: HeroTerminalProps) {
             </div>
           </div>
         </div>
+
+        {/* Floating joke text at bottom */}
         <div className="fixed bottom-2 left-2 md:bottom-4 md:left-8 text-xs text-gray-300 space-y-1 max-w-[calc(100vw-1rem)] md:max-w-none">
           <div className="text-green-400">Press Ctrl+Alt+Del to restart (just kidding)</div>
           <div className="text-cyan-400">Or try turning it off and on again...</div>
@@ -526,13 +677,17 @@ export function HeroTerminal({ onExitTriggered }: HeroTerminalProps) {
     )
   }
 
+  // === MAIN TERMINAL RENDER ===
   return (
     <section className="flex flex-col justify-start items-center relative overflow-hidden py-8">
+      {/* Grid background pattern */}
       <div className="absolute inset-0 bg-[linear-gradient(rgba(0,255,65,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(0,255,65,0.03)_1px,transparent_1px)] bg-[size:50px_50px]"></div>
 
       <div className="container mx-auto px-4 relative z-10 w-full">
         <div className="max-w-4xl mx-auto">
+          {/* Terminal window */}
           <div className="bg-card border border-border rounded-lg shadow-2xl mb-8 flex flex-col">
+            {/* Terminal header with traffic light buttons */}
             <div className="flex items-center gap-2 px-4 py-2 border-b border-border bg-muted/20 flex-shrink-0">
               <div className="w-3 h-3 bg-destructive rounded-full"></div>
               <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
@@ -540,8 +695,10 @@ export function HeroTerminal({ onExitTriggered }: HeroTerminalProps) {
               <span className="ml-4 text-xs text-muted-foreground font-mono">terminal://promprot.com</span>
             </div>
 
+            {/* Terminal content */}
             <div className="p-8 font-mono">
               <div className="text-left space-y-1">
+                {/* Render all terminal lines */}
                 {terminalLines.map((line, index) => {
                   return (
                     <p
@@ -600,6 +757,7 @@ export function HeroTerminal({ onExitTriggered }: HeroTerminalProps) {
                   )
                 })}
 
+                {/* Interactive input line */}
                 {isInteractive && !isExitSequenceActive && (
                   <div className="flex items-center mt-2">
                     <span className="text-green-400 font-bold">root@promprot:~#</span>
@@ -615,6 +773,7 @@ export function HeroTerminal({ onExitTriggered }: HeroTerminalProps) {
                         spellCheck={false}
                         placeholder="Type 'help' for commands..."
                       />
+                      {/* Animated cursor */}
                       <span
                         className={`absolute left-0 top-0 ${showInputCursor ? "opacity-100 text-green-400 font-bold text-lg" : "opacity-0"} transition-opacity duration-100 pointer-events-none`}
                         style={{ left: userInput.length > 0 ? `${userInput.length * 0.6}em` : "0" }}
