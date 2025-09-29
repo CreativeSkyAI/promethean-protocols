@@ -28,15 +28,15 @@ const dmSans = DM_Sans({
  */
 export const metadata: Metadata = {
   // Basic SEO
-  title: "PROMPROT // Promethean Protocols",
+  title: "Promethean Protocols by CreativeSky.AI",
   description:
     "Access restricted. Authorized personnel only. Interactive cyberpunk terminal interface for the digital underground.",
   keywords: ["cyberpunk", "terminal", "hacker", "interactive", "web interface", "promethean protocols"],
 
   // Author and branding
-  authors: [{ name: "$κιηηεя", url: "https://github.com/promprot" }],
-  creator: "$κιηηεя",
-  publisher: "PROMPROT",
+  authors: [{ name: "CreativeSky.AI", url: "https://github.com/CreativeSkyAI/promethean-protocols" }],
+  creator: "CreativeSky.AI",
+  publisher: "Promethean Protocols",
 
   // Search engine directives
   robots: {
@@ -55,17 +55,17 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://promprot.com",
-    title: "PROMPROT // Promethean Protocols",
+    url: "https://www.prometheanprotocols.com",
+    title: "Promethean Protocols by CreativeSky.AI",
     description:
       "Access restricted. Authorized personnel only. Interactive cyberpunk terminal interface for the digital underground.",
-    siteName: "PROMPROT",
+    siteName: "Promethean Protocols",
     images: [
       {
-        url: "/promprot-preview.png",
+        url: "/promethean-protocols-preview.png",
         width: 1200,
         height: 630,
-        alt: "PROMPROT Cyberpunk Terminal Interface",
+        alt: "Promethean Protocols Cyberpunk Terminal Interface",
       },
     ],
   },
@@ -73,10 +73,10 @@ export const metadata: Metadata = {
   // Twitter/X Card
   twitter: {
     card: "summary_large_image",
-    title: "PROMPROT // Promethean Protocols",
+    title: "Promethean Protocols by CreativeSky.AI",
     description: "Access restricted. Authorized personnel only.",
-    creator: "@promproto",
-    images: ["/promprot-preview.png"],
+    creator: "@CreativeSkyAI",
+    images: ["/promethean-protocols-preview.png"],
   },
 
   // Favicon and app icons for various devices
@@ -105,9 +105,9 @@ export const metadata: Metadata = {
 
   // PWA manifest and other metadata
   manifest: "/manifest.json",
-  metadataBase: new URL("https://promprot.com"),
+  metadataBase: new URL("https://www.prometheanprotocols.com"),
   alternates: {
-    canonical: "https://promprot.com",
+    canonical: "https://www.prometheanprotocols.com",
   },
   other: {
     "theme-color": "#00ff00", // Cyberpunk green theme
@@ -155,10 +155,10 @@ export default function RootLayout({
                   console.clear();
                   
                   console.log('%c ____                      ____            _   ', 'color: #00ff00; font-family: monospace; font-size: 14px; font-weight: bold;');
-                  console.log('%c|  _ \\ _ __ ___  _ __ ___ |  _ \\ _ __ ___ | |_ ', 'color: #00ff00; font-family: monospace; font-size: 14px; font-weight: bold;');
-                  console.log('%c| |_) | \\\'__/ _ \\\\| \\\'_ \\\' _ \\\\| |_) | \\\'__/ _ \\\\| __|', 'color: #00ff00; font-family: monospace; font-size: 14px; font-weight: bold;');
+                  console.log('%c|  _ \\\\ _ __ ___  _ __ ___ |  _ \\\\ _ __ ___ | |_ ', 'color: #00ff00; font-family: monospace; font-size: 14px; font-weight: bold;');
+                  console.log('%c| |_) | \\\\\\'__/ _ \\\\\\\\| \\\\\\'_ \\\\\\' _ \\\\\\\\| |_) | \\\\\\'__/ _ \\\\\\\\| __|', 'color: #00ff00; font-family: monospace; font-size: 14px; font-weight: bold;');
                   console.log('%c|  __/| | | (_) | | | | | |  __/| | | (_) | |_ ', 'color: #00ff00; font-family: monospace; font-size: 14px; font-weight: bold;');
-                  console.log('%c|_|   |_|  \\\\___/|_| |_| |_|_|   |_|  \\\\___/ \\\\__|', 'color: #00ff00; font-family: monospace; font-size: 14px; font-weight: bold;');
+                  console.log('%c|_|   |_|  \\\\\\\\___/|_| |_| |_|_|   |_|  \\\\\\\\___/ \\\\\\\\__|', 'color: #00ff00; font-family: monospace; font-size: 14px; font-weight: bold;');
                   console.log('%c                                                ', 'color: #00ff00; font-family: monospace; font-size: 14px;');
                   console.log('%c        PROMETHEAN PROTOCOLS v2.1.7           ', 'color: #00ff00; font-family: monospace; font-size: 12px; text-decoration: underline;');
                   console.log('');

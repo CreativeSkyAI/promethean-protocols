@@ -14,7 +14,7 @@ interface HeroTerminalProps {
 /**
  * Text that gets typed out character by character in the header
  */
-const FULL_TEXT = "promprot"
+const FULL_TEXT = "promethean protocols"
 
 /**
  * Fetches user's IP information with retry logic
@@ -155,7 +155,7 @@ export function HeroTerminal({ onExitTriggered }: HeroTerminalProps) {
         return [
           '<span class="text-cyan-400 font-bold">Authorized Commands:</span>',
           '  <span class="text-yellow-400">clear</span>         - <span class="text-gray-400">Clear the terminal screen</span>',
-          '  <span class="text-yellow-400">whoami</span>        - <span class="text-gray-400">Display promprot</span>',
+          '  <span class="text-yellow-400">whoami</span>        - <span class="text-gray-400">Display promethean protocols</span>',
           '  <span class="text-yellow-400">time</span>          - <span class="text-gray-400">Show local date/time</span>',
           '  <span class="text-yellow-400">trace</span>         - <span class="text-gray-400">Run trace sequence</span>',
           '  <span class="text-yellow-400">access</span>        - <span class="text-gray-400">Access promethean protocols</span>',
@@ -167,11 +167,11 @@ export function HeroTerminal({ onExitTriggered }: HeroTerminalProps) {
 
       case "whoami":
         return [
-          `<span class="text-green-400">Name:</span> <span class="text-green-300">$κιηηεя</span>`,
+          `<span class="text-green-400">Name:</span> <span class="text-green-300">CreativeSky.AI</span>`,
           `<span class="text-green-400">Location:</span> <span class="text-green-200">nearing you..</span>`,
-          `<span class="text-green-400">X (Twitter):</span> <a href="https://x.com/promproto" target="_blank" rel="noopener noreferrer" class="text-green-300 hover:text-green-200 underline">@promproto</a>`,
-          `<span class="text-green-400">GitHub:</span> <a href="https://github.com/promprot/promprot.com" target="_blank" rel="noopener noreferrer" class="text-green-300 hover:text-green-200 underline">@promprot</a>`,
-          `<span class="text-green-400">Web:</span> <a href="https://promprot.com" target="_blank" rel="noopener noreferrer" class="text-green-300 hover:text-green-200 underline">promprot.com</a>`,
+          `<span class="text-green-400">X (Twitter):</span> <a href="https://x.com/CreativeSkyAI" target="_blank" rel="noopener noreferrer" class="text-green-300 hover:text-green-200 underline">@CreativeSkyAI</a>`,
+          `<span class="text-green-400">GitHub:</span> <a href="https://github.com/CreativeSkyAI/promethean-protocols" target="_blank" rel="noopener noreferrer" class="text-green-300 hover:text-green-200 underline">@CreativeSkyAI</a>`,
+          `<span class="text-green-400">Web:</span> <a href="https://CreativeSky.AI" target="_blank" rel="noopener noreferrer" class="text-green-300 hover:text-green-200 underline">CreativeSky.AI</a>`,
         ]
 
       case "access":
@@ -371,7 +371,7 @@ export function HeroTerminal({ onExitTriggered }: HeroTerminalProps) {
         setTerminalLines([])
       } else {
         // Add command and response to terminal
-        setTerminalLines((prev) => [...prev, `root@promprot:~# ${command}`, ...response, ""])
+        setTerminalLines((prev) => [...prev, `root@prometheus:~# ${command}`, ...response, ""])
       }
 
       setUserInput("")
@@ -703,7 +703,7 @@ export function HeroTerminal({ onExitTriggered }: HeroTerminalProps) {
               <div className="w-3 h-3 bg-destructive rounded-full"></div>
               <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
               <div className="w-3 h-3 bg-primary rounded-full"></div>
-              <span className="ml-4 text-xs text-muted-foreground font-mono">terminal://promprot.com</span>
+              <span className="ml-4 text-xs text-muted-foreground font-mono">terminal://prometheanprotocols.com</span>
             </div>
 
             {/* Terminal content */}
@@ -728,7 +728,7 @@ export function HeroTerminal({ onExitTriggered }: HeroTerminalProps) {
                             ? "text-red-400 font-bold"
                             : line && line.startsWith("$")
                               ? "text-green-400"
-                              : line && line.startsWith("root@promprot")
+                              : line && line.startsWith("root@prometheus")
                                 ? "text-green-400 font-bold"
                                 : line &&
                                     (line.includes("[ACCESS DENIED]") ||
@@ -747,8 +747,8 @@ export function HeroTerminal({ onExitTriggered }: HeroTerminalProps) {
                                         line.includes("fingerprint:") ||
                                         line.includes("$κιηηεя") ||
                                         line.includes("promprot@pm.me") ||
-                                        line.includes("@promproto") ||
-                                        line.includes("github.com/promprot"))
+                                        line.includes("@CreativeSkyAI") ||
+                                        line.includes("github.com/CreativeSkyAI"))
                                     ? "text-green-400"
                                     : line &&
                                         (line.includes("ANALYSIS_COMPLETE") ||
@@ -771,7 +771,7 @@ export function HeroTerminal({ onExitTriggered }: HeroTerminalProps) {
                 {/* Interactive input line */}
                 {isInteractive && !isExitSequenceActive && (
                   <div className="flex items-center mt-2">
-                    <span className="text-green-400 font-bold">root@promprot:~#</span>
+                    <span className="text-green-400 font-bold">root@prometheus:~#</span>
                     <div className="relative flex-1 ml-1">
                       <input
                         ref={inputRef}

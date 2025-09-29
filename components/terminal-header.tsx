@@ -87,7 +87,7 @@ export function TerminalHeader({ isVisible = true }: TerminalHeaderProps) {
         <div className="flex items-center justify-between font-mono text-sm">
           {/* Left side: Terminal prompt */}
           <div className="flex items-center gap-4">
-            <span className="text-green-400 font-bold">root@promprot:~$</span>
+            <span className="text-green-400 font-bold">root@prometheus:~$</span>
           </div>
 
           {/* Right side: Time and theme toggle */}

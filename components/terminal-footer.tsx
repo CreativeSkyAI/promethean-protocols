@@ -34,10 +34,15 @@ export function TerminalFooter({ isVisible = true }: TerminalFooterProps) {
         <div className="flex items-center justify-center font-mono text-sm">
           <span className="text-muted-foreground">
             {/* Copyright and project name */}
-            <span className="text-green-400 font-medium">©2025 promprot (promethean protocols)</span>{" "}
-            <span className="text-green-400 font-bold">by</span>{" "}
-            {/* Creator attribution with special character styling */}
-            <span className="text-green-400 font-medium">$κιηηεя</span>
+            <span className="text-green-400 font-medium">©2025 promethean protocols by </span>
+            <a
+              href="https://creativesky.ai"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-green-400 font-bold hover:text-green-300 transition-colors"
+            >
+              CreativeSky.AI
+            </a>
           </span>
         </div>
       </div>

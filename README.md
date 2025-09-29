@@ -1,6 +1,6 @@
-# PROMPROT // Promethean Protocols
+# Promethean Protocols
 
-[![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=for-the-badge&logo=vercel)](https://vercel.com/promprotprojects/v0-vercel-ai-comparison)
+[![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=for-the-badge&logo=vercel)](https://vercel.com/creativeskyai/promethean-protocols)
 [![Built with v0](https://img.shields.io/badge/Built%20with-v0.app-black?style=for-the-badge)](https://v0.app/chat/projects/g7RYLC66p8F)
 [![Next.js](https://img.shields.io/badge/Next.js-15-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org/)
@@ -19,14 +19,14 @@ Clone the template to your v0 workspace, deploy instantly to Vercel, and customi
 
 ### Option 2: Traditional Git Clone
 \`\`\`bash
-git clone https://github.com/promprot/promprot-terminal
-cd promprot.com
+git clone https://github.com/CreativeSkyAI/promethean-protocols
+cd promethean-protocols
 npm install
 npm run dev
 \`\`\`
 
 ## 🌐 Live Demo
-**[https://promprot-terminal.vercel.app](https://promprot-terminal.vercel.app)**
+**[https://www.prometheanprotocols.com](https://www.prometheanprotocols.com)**
 
 ## ✨ Features
 
@@ -87,10 +87,10 @@ MIT License - see [LICENSE](LICENSE) for details.
 
 ## 👤 Author
 
-- **$κιηηεя**
-- Website: [promprot.com](https://promprot.com)
-- X: [@promproto](https://x.com/promproto)
-- GitHub: [@promprot](https://github.com/promprot)
+- **CreativeSky.AI**
+- Website: [CreativeSky.AI](https://creativesky.ai)
+- X: [@CreativeSkyAI](https://x.com/CreativeSkyAI)
+- GitHub: [@CreativeSkyAI](https://github.com/CreativeSkyAI)
 
 ---
 
